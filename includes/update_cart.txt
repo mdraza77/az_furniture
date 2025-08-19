@@ -1,0 +1,38 @@
+<?php
+session_start();
+require_once '../config/database.php';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $product_id = $_POST['product_id'];
+    $action = $_POST['action'];
+
+    if (!isset($_SESSION['cart'])) {
+        $_SESSION['cart'] = [];
+    }
+
+    foreach ($_SESSION['cart'] as &$item) {
+        if ($item['id'] == $product_id) {
+            if ($action === 'increase') {
+                $item['quantity']++;
+            } else if ($action === 'decrease') {
+                $item['quantity']--;
+                if ($item['quantity'] <= 0) {
+                    // Remove item from cart if quantity reaches 0
+                    unset($item);
+                }
+            }
+            break;
+        }
+    }
+
+    // Reindex array after possible unset
+    $_SESSION['cart'] = array_values($_SESSION['cart']);
+    
+    // Update cart count
+    $_SESSION['cart_count'] = array_sum(array_column($_SESSION['cart'], 'quantity'));
+
+    echo json_encode(['success' => true]);
+    exit;
+}
+
+echo json_encode(['success' => false]);

@@ -1,0 +1,23 @@
+<?php
+session_start();
+require_once '../config/database.php';
+
+// कार्ट में मौजूद प्रोडक्ट्स के लिए नई कीमतें और नाम प्राप्त करें
+$query = "UPDATE cart c 
+         INNER JOIN products p ON c.product_id = p.id 
+         SET c.price = CASE 
+             WHEN p.sale_price IS NOT NULL AND p.sale_price > 0 THEN p.sale_price 
+             ELSE p.price 
+         END,
+         c.product_name = p.name";
+
+try {
+    if ($conn->query($query)) {
+        echo json_encode(['success' => true, 'message' => 'Cart updated successfully']);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Failed to update cart']);
+    }
+} catch (Exception $e) {
+    echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
+}
+?>

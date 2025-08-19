@@ -1,0 +1,39 @@
+<?php
+header('Content-Type: application/json');
+session_start();
+
+try {
+    require_once '../config/database.php';
+
+    if (!isset($_SESSION['last_update_check'])) {
+        $_SESSION['last_update_check'] = date('Y-m-d H:i:s');
+    }
+
+    $last_check = $_SESSION['last_update_check'];
+
+    $query = "SELECT COUNT(*) as updates, MAX(last_updated) as latest_update 
+              FROM products 
+              WHERE last_updated > ?";
+
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("s", $last_check);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+
+    if ($row['updates'] > 0) {
+        $_SESSION['last_update_check'] = $row['latest_update'];
+    }
+
+    echo json_encode([
+        'hasUpdates' => $row['updates'] > 0,
+        'lastUpdate' => $row['latest_update']
+    ]);
+} catch (Exception $e) {
+    http_response_code(500);
+    echo json_encode([
+        'error' => 'Internal server error',
+        'hasUpdates' => false
+    ]);
+}
+?>
