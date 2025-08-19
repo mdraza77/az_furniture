@@ -450,12 +450,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
             <div class="form-group">
                 <label>Email</label>
-                <input type="email" name="email" placeholder="Enter Your Email" required value="Ashmit13082004@gmail.com">
+                <input type="email" name="email" placeholder="Enter Your Email" required value="mdraza8297@gmail.com">
             </div>
 
             <div class="form-group">
                 <label>Password</label>
-                <input type="password" name="password" placeholder="••••••••" required value="Ashmit@123456">
+                <input type="password" name="password" placeholder="••••••••" required value="@Mdraza012345">
             </div>
 
             <div class="remember-forgot">

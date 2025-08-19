@@ -6,8 +6,8 @@ error_reporting(E_ALL);
 
 // SMTP configs
 define('SMTP_HOST', 'smtp.gmail.com');
-define('SMTP_USER', 'ashmit13082004@gmail.com');
-define('SMTP_PASS', 'adtsmaytstaoqxrw');
+define('SMTP_USER', 'mdraza7477@gmail.com');
+define('SMTP_PASS', 'lkabvvtlyvunmtfo');
 define('SMTP_PORT', 587);
 
 // Composer autoload

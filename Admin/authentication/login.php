@@ -20,7 +20,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $errors['login'] = "Email is not registered";
             } else {
                 $stmt = $conn->prepare("SELECT id, full_name, email, role FROM admin_users WHERE email = ? AND password_hash = ? AND is_active = 1");
-                $stmt->bind_param("ss", $email, md5($password));
+                $hashed_password = md5($password);
+                $stmt->bind_param("ss", $email, $hashed_password);
                 $stmt->execute();
                 $result = $stmt->get_result();
                 $user = $result->fetch_assoc();
@@ -83,12 +84,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
             <div class="form-group">
                 <label>Email</label>
-                <input type="email" name="email" placeholder="Enter your email" required value="">
+                <input type="email" name="email" placeholder="Enter your email" required value="mdraza8297@gmail.com">
             </div>
 
             <div class="form-group">
                 <label>Password</label>
-                <input type="password" name="password" placeholder="••••••••" required value="">
+                <input type="password" name="password" placeholder="••••••••" required value="@Mdraza012345">
             </div>
 
             <div class="remember-forgot">
